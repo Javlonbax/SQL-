@@ -1,0 +1,20 @@
+create database statistika02
+
+
+
+--- create --- yaratish (jadval, baza ...)
+--- drop --- o`chirish
+--- delete --- tozalash, butunligicha + qatorlar bo`yicha
+--- truncate --- tozalash, butun tozalash
+--- alter --- o`zgartirish
+--- update --- ma'lumotlarni yangilash
+--- set --- ma'lumotlarni yangilash
+--- declare --- yangi o`zgaruvchi yaratish
+use statistika02
+
+create table students(studentID int, studentName varchar(30), studentScore decimal(10,2))    -- 30 ta simvolgacha,  10 xonali butun va verguldan keyin 2 ta xonali son bo`lishi kereligini bildiradi
+select * from students      - ---       print o`xshab ko`rsatarkan, ko`rish uchun har doim select qilish kere
+insert into students values (1,'Alex',50)     --- ma'lumot qo`shadi, bunda qavs ichidiga ko`rsatkichla jadval ustunlari soni bilan teng bo`lishi kere
+insert into students values (4,'bob',25),(3,'johon',77)    2 ta va ko`pro satrlab qo`shish jadvalga
+insert into students (studentID,studentName) values (4,'Vahob')  --- kereli ustunlarga qo`shadi
+delete students   -- agar shart bermasa jadvalli barcha ma'lumotlarini o`chiradi
