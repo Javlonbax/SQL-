@@ -18,3 +18,30 @@ insert into students values (1,'Alex',50)     --- ma'lumot qo`shadi, bunda qavs 
 insert into students values (4,'bob',25),(3,'johon',77)    2 ta va ko`pro satrlab qo`shish jadvalga
 insert into students (studentID,studentName) values (4,'Vahob')  --- kereli ustunlarga qo`shadi
 delete students   -- agar shart bermasa jadvalli barcha ma'lumotlarini o`chiradi
+where studentID=3 -- deleteni sharti 
+
+truncate table students   -- voobshe hamma narsani o`chiradi
+
+update students      -
+set studentScore=100  -   ma'lumotni yangilaydi   
+where studentID=1     -
+
+drop table students       - jadvalli tegi bilan o `chiradi
+
+alter table students
+add studentstatus varchar (30)      -   ustun qo`shadi
+
+alter table students
+drop column studentstatus    --  ustunni o`chiradi
+
+alter table students
+alter column studentID varchar(15)  --- xarakteristikani o`zgartiradi
+
+alter table students
+add birthdate datetime
+
+select * from students
+
+update students
+set birthdate='11/10/2025'
+where studentID=1
