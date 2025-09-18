@@ -1,0 +1,28 @@
+create table employee (id int, Name varchar(30), salary int)
+bulk insert Employee2
+from 'C:\Users\user\Desktop\J. Saipov\lesson18\New Текстовый документ.txt'
+with (
+	firstrow=2,                    --- 1 column name bo`gani uchun 2 dan boshlanadi
+	fieldterminator=',',           ---- bo`shliqqa ajratish sharti
+	rowterminator='\n')           ----     qatorlarga ajratish sharti
+
+	select * from employee2
+
+--- Constraint ---- cheklov
+create table test (age int check(age>0))     ---- check ---yani shart qo`ysa bo`ladi
+drop table test
+
+
+create table test (age int, manager varchar(50) default ('Dilshod'))
+select * from test
+insert into test values (1,'husan')
+insert into test (age) values (1)        jadvalli faqat age ustuniga qiymat berildi
+select * from test
+
+create table test (age int unique, manager varchar(50) default ('Dilshod'))      --  unique --- unikalnost qo`yadi, ya'ni u ustunda dubl bo`miydi
+insert into test values (1,'san'),(1,'man')              --- 1 qatorda 1 ta tranzaksiya bo`lib, ikkaloviyam bazaga kirmiydi
+
+create table test (age int unique not null, manager varchar(50) default ('Dilshod'))   ---- not null --- bo`sh bo`lmasin digan shart
+insert into test values (2,'san')
+insert into test values ('','man')
+insert into test (age, manager) values (10,'u')
