@@ -18,3 +18,24 @@ insert into perv values(1234567,98742511,1000)
 
 
 select * from katalog
+
+
+####### pitonda
+import pandas as pd
+from sqlalchemy import create_engine
+import pyodbc
+
+df2=pd.read_excel('katalog.xlsx')
+df3=pd.read_excel('perv.xlsx')
+
+server_name="DATA-16"  # sql da connection >> engine
+database_name="stat03_group2"   # sqlda ishlab turgan bazamiz
+
+engine = create_engine(
+    f"mssql+pyodbc://@{server_name}/{database_name}?"
+    "trusted_connection=yes&driver=ODBC+Driver+17+for+sql+Server"
+)
+connection= engine.connect()
+
+df2.to_sql("perv",connection,if_exists='replace')
+df2.to_sql("katalog",connection,if_exists='replace')
