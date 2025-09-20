@@ -1,0 +1,20 @@
+---- Primary Key, Foreign Key
+create database stat03_group2
+use stat03_group2
+create table katalog (okpo varchar (30), INN varchar(30), name varchar(100))
+
+create table katalog (okpo varchar (30), INN varchar(30) primary key, name varchar(100))  -- yaratvotganda srazu berib ketish
+
+alter table katalog
+alter column okpo varchar(30) not null    ---- yaratilgan tablisada o`zgartirish uchun birinchi not null qivolinadi
+
+alter table katalog
+add constraint pk_okpo primary key (okpo)    --- keyin primary key qilinadi
+
+insert into katalog values(1234567,98742511,1000)
+
+create table perv (okpo varchar(30) foreign key references katalog (okpo), INN varchar(30), oy int)   --- foreign key references katalog (okpo) degani faqat katalogdagi bor okpolar kiritilishi mumkin digani
+insert into perv values(1234567,98742511,1000)
+
+
+select * from katalog
