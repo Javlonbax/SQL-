@@ -1,0 +1,90 @@
+create database stat02_lesson4
+use stat02_lesson4
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(100),
+    Price DECIMAL(10, 2),
+    Category VARCHAR(50),
+    StockQuantity INT
+);
+
+INSERT INTO Products VALUES
+(1, 'Laptop', 1200.00, 'Electronics', 30),
+(2, 'Smartphone', 800.00, 'Electronics', 50),
+(3, 'Tablet', 400.00, 'Electronics', 40),
+(4, 'Monitor', 250.00, 'Electronics', 60),
+(5, 'Keyboard', 50.00, 'Accessories', 100),
+(6, 'Mouse', 30.00, 'Accessories', 120),
+(7, 'Chair', 150.00, 'Furniture', 80),
+(8, 'Desk', 200.00, 'Furniture', 75),
+(9, 'Pen', 5.00, 'Stationery', 300),
+(10, 'Notebook', 10.00, 'Stationery', 500),
+(11, 'Printer', 180.00, 'Electronics', 25),
+(12, 'Camera', 500.00, 'Electronics', 40),
+(13, 'Flashlight', 25.00, 'Tools', 200),
+(14, 'Shirt', 30.00, 'Clothing', 150),
+(15, 'Jeans', 45.00, 'Clothing', 120),
+(16, 'Jacket', 80.00, 'Clothing', 70),
+(17, 'Shoes', 60.00, 'Clothing', 100),
+(18, 'Hat', 20.00, 'Accessories', 50),
+(19, 'Socks', 10.00, 'Clothing', 200),
+(20, 'T-Shirt', 25.00, 'Clothing', 150),
+(21, 'Lamp', 60.00, 'Furniture', 40),
+(22, 'Coffee Table', 100.00, 'Furniture', 35),
+(23, 'Book', 15.00, 'Stationery', 250),
+(24, 'Rug', 90.00, 'Furniture', 60),
+(25, 'Cup', 5.00, 'Accessories', 500),
+(26, 'Bag', 25.00, 'Accessories', 300),
+(27, 'Couch', 450.00, 'Furniture', 15),
+(28, 'Fridge', 600.00, 'Electronics', 20),
+(29, 'Stove', 500.00, 'Electronics', 15),
+(30, 'Microwave', 120.00, 'Electronics', 25),
+(31, 'Air Conditioner', 350.00, 'Electronics', 10),
+(32, 'Washing Machine', 450.00, 'Electronics', 15),
+(33, 'Dryer', 400.00, 'Electronics', 10),
+(34, 'Hair Dryer', 30.00, 'Accessories', 100),
+(35, 'Iron', 40.00, 'Electronics', 50),
+(36, 'Coffee Maker', 50.00, 'Electronics', 60),
+(37, 'Blender', 35.00, 'Electronics', 40),
+(38, 'Juicer', 55.00, 'Electronics', 30),
+(39, 'Toaster', 40.00, 'Electronics', 70),
+(40, 'Dishwasher', 500.00, 'Electronics', 20)
+
+select * from Products
+where Price > 500 or (StockQuantity>120 and Category='Electronics')
+
+select * from Products
+where Category like '%on%'       -   on so`zi bor ko`rsatkichlarni filtrlab beradi
+where Category like '%s'       -   s so`zi bilan tugaydigan ko`rsatkichlarni filtrlab beradi
+where Category like 'S%'       -   S  bilan boshlanadigan ko`rsatkichlarni filtrlab beradi
+where Category like '_t%'       -   2- harfi t bo`lgan ko`rsatkichlarni filtrlab beradi, pastki chiziq nechta ushanchadan keyin bo`ladi
+where Category like '[SC]%'    ----        boshi S yoki C bo`lgan ko`rsatkichlarni filtrlab beradi
+where Category not like '[SC]%'
+  
+select * from Products
+where Category in ('Accessories','Electronics')  ----  Category ning ichidagi 'Accessories','Electronics' li ko`rsatkichlarni saralaydi
+
+where Category not in ('Accessories','Electronics')
+
+where Price between 400 and 800
+
+select ProductName, ProductID from Products
+where Category in ('Electronics','Accessories') and (Price>500 and StockQuantity>20)
+
+select distinct Category from Products    -   -----     distinct faqat unique, ya'ni dubllarsiz chiqaradi
+
+select distinct Category,ProductName from Products    ---   guruhlanvotgan 1 yozilgani birinchi sortirofka, keyingi yozilgan keyin sortirofvka qiladi
+
+
+select * from Products
+order by Price asc               ----  kichikdan kattaga sortirofka, yozilmasayam bo`ladi    , tekst bilan ham ishliydi
+order by Price desc               ----  kattadan kichikka sortirofka, yozilmasayam bo`ladi , tekst bilan ham ishliydi
+
+  select top 3 * from Products     --- boshidi 3 tani chiqaradi
+  
+  select top 3 * from Products order by Price desc    - narx bo`yicha sort qivolib, top 3 tani chiqaradi
+
+
+select * from Products
+order by Price desc
+offset 5 rows fetch next 5 rows only    ---    5 ta qatorri tashab keyingi 5 tani oladi
