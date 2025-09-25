@@ -1,0 +1,73 @@
+create database stat02_lesson05
+
+use stat02_lesson05
+
+create table test1 (id int)
+insert into test1 values (1),(2),(3),(4)
+
+create table test2 (id int)
+insert into test2 values (3),(4),(5),(6)
+
+select * from test1
+intersect                    ---- faqat ikkitasida borri oladi
+select * from test2
+
+select * from test1
+union                       ----   ikkalovidagi hammasini oladi faqat dubllarni 1 marta oladi
+select * from test2
+
+select * from test1
+union all                   ----   ikkalovidagi hammasini oladi, dublla takror chiqvuradi
+select * from test2
+
+select * from test1
+except                              -----   1 digi ikkida borlaridan tashqari 
+select * from test2
+
+select * from test2
+except                      -----   2 digi 1da borlaridan tashqari
+select * from test1
+
+select * from test1
+union                  
+select * from test2          -----      ketme ket qip ketvurish kere o`shanda ikki tekstan chiqadigan valuelarni boshqarish uchun
+except
+select * from test1
+intersect
+select * from test2
+
+select                                                                   
+		*,
+		case                                                   
+		when StockQuantity < 50 then 'low sales'                                                      ------    elif yozish shartmas
+		when StockQuantity < 200 then 'Medium sales' else 'High sales' end as QuantityCategory
+from Products
+
+  select 
+		*,
+		Price*StockQuantity as Sales,                            ------ Sales ustunini qo`shadi
+		case 
+			when Price*StockQuantity < 10000 then 'low sales'
+			when Price*StockQuantity < 20000 then 'Medium sales' else 'High sales' end as SaleCategory
+from Products
+
+select * from countries
+order by country desc      ---  sortirofaka
+
+select * from countries
+order by case when country='Uzbekistan' then 0 else 1 end,country      ---    Uzbekistonga 0 berib qogalariga 1, sortirovka shu raqam va alfavit bo`yicha bo`ladi,   case doim end bilan tugiydi
+
+select *, iif(price<100,'arzon',iif(price<250,'orta',iif(price<500,'qimmat','juda qimmat'))) as pp from Products    -- case mas iif ishlatsa shunaqa bo`ladi
+
+ declare @test int=16
+declare @test2 int =15
+declare @test3 int
+set @test3=@test + @test2    - -       -    hammasini birla yurgizish kere, hotirada saqlamiydi, yani test3 ozini select qisa hich narsa chiqarmiydi
+select @test3
+
+declare @students table (id int, name varchar(30))
+insert into @students
+select 1, 'Alex'                -
+union all                       -           tablisaga ma'lumot kiradi
+select 2, 'John'                 -
+select * from @students
