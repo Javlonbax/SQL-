@@ -1,0 +1,62 @@
+create database stat02_lesson6
+
+use stat02_lesson6
+
+select * into Producrs from stat02_lesson05.[dbo].[Products]
+
+sp_rename 'Producrs', 'Products'
+
+select * from Products
+
+EXEC sp_rename 'Productss', 'Products';
+
+----- Aggrigation --- qayta ishlash
+--- sum 
+--- avg
+--- count(), count(distinct), count(*)
+--- max
+--- min
+
+select sum(StockQuantity) from Products      
+select avg(StockQuantity) from Products 
+select max(StockQuantity) from Products
+select min(StockQuantity) from Products 
+
+create table test(id int)
+insert into test values (1),(2),(3),(Null),(4),(3),(5),(Null)
+insert into test values (Null),(3)
+
+
+select * from test
+select count(id) from test
+select count(distinct id) from test
+select count(*) from test
+
+select * from Products
+
+select category,sum(StockQuantity) from Products 
+group by category
+
+
+select category,sum(Price*StockQuantity) as total from Products 
+where Category <> 'Electronics'
+group by category
+having sum(Price*StockQuantity)>20000
+order by total desc
+
+
+from
+where
+group by
+having
+select
+order by
+
+select category,max(Price)-min(price) as result from Products 
+group by category
+
+select * from Products
+select * from(select category, count(productname) as totalproducts from products
+group by category) as a
+pivot(max(totalproducts) 
+for category in ([Accessories],[Clothing],[electronics],[furniture],[stationery],[tools])) as pvt
