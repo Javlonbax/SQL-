@@ -1,0 +1,57 @@
+create database stat02_lesson7
+use stat02_lesson05
+select * into Products from stat02_lesson05.[dbo].[Products]
+
+
+select * from Products
+where StockQuantity>50
+ ---- 100 tadan kop, narxi 500 dan arzon
+
+select * from Products
+where StockQuantity>=100 and price<=500
+
+--- nechta unikal kategoriya
+
+select distinct Category from products
+ 
+ 
+ ---- har bir kategoriyada nechta product bor
+
+select category,count(productID) as total from Products
+group by category
+
+--- har bir kategoriya bo`yicha sotuv summasi
+select category,sum(price*StockQuantity) as total from Products
+group by category
+
+---- quantity 50 dan kop, narxi 400 dan katta produktlari 5 tadan kotta kategoriyalarni chiqarish 
+
+select category,count(ProductName) from Products
+where StockQuantity>50 and Price<=400  
+group by Category
+having count(productid)>=5
+
+--- narxlarni 3 taga bo`lamiz: <500-low,<1000-mid, else high
+
+select * from Products
+
+select *, case 
+when Price < 500 then 'low' 
+when Price < 1000 then 'Medium' else 'High' end as narx_descrip from Products
+
+select * from Products
+where 'Medium'= case                          ---- faqat mediumlilarni qoldiradi
+when Price < 500 then 'low' 
+when Price < 1000 then 'Medium' else 'High' end
+
+select * from Products
+where ProductName like  'T%'     --- 1- harfi 'T' boshlanadi          
+
+select * from Products
+where ProductName like  '_l%'      - 2-harfi l bo`lgan
+
+select * from Products
+where ProductName like '[ST]%'    --- 1- harfi 'T' yoki 'S' bilAN boshlanadi
+
+select * from Products
+where ProductName like '[^ST]%'    --- 1- harfi 'T' yoki 'S' bilAN boshlanmaydiganlar yoki not like qilsa bo`ladi 
