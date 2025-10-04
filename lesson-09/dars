@@ -1,0 +1,81 @@
+create database stat02_lesson09
+use stat02_lesson09
+
+select * from family
+
+select child.name as child, ISNULL(parent.name,'eng kotta') as parent,parent.id as parent_id, child.id as child_id from family as child 
+left join family as parent         
+on child.parentid=parent.id                           ----- otasoni chiqaradi
+
+select child.name as child, 
+ISNULL(parent.name,'eng kotta') as parent,
+parent.id as parent_id, 
+child.id as child_id,
+grandfather.name as grandfather,
+grandfather.id as grandfather_id
+from family as child 
+left join family as parent
+on child.parentid=parent.id
+left join family as grandfather                              --- dodalani chiqaradi
+on parent.parentid=grandfather.id
+
+select l1.letter as l1_letter, max(l2.letter) as l2_letter from letters as l1
+left join letters as l2
+on l1.letter>l2.letter                                                                           --- o`zidan 1 ta oldingi harffi chiqaradi
+group by l1.letter
+
+create table sales (year int, sales int)
+insert into sales values (2000,10000),(2001,25000),(2002,24000),(2003,26000)
+DELETE FROM sales WHERE year = 200
+
+select * from sales
+
+select s1.year,s1.sales,sum(s2.sales) as running_total from sales as s1    --- running total ustunda cumulyativ yig`indi bo`p boradi
+left join sales as s2
+on s1.year>=s2.year
+group by s1.year,s1.sales
+order by s1.year
+
+                    ----- product bo`yicha cumulyativ qilib borish
+select * from productsales
+select ps1.productname,ps1.year,ps1.sales,sum(ps2.sales) as runningtotal from productsales as ps1
+join productsales as ps2
+on ps1.productname=ps2.productname and ps1.year>=ps2.year
+group by ps1.productname, ps1.year, ps1.sales
+order by ps1.productname,ps1.year
+
+select * from productsales
+
+---1st step
+select Ps1.productName,Ps1.Year,Ps1.Sales,Max(Ps2.Year) as prev_year from ProductSales as Ps1
+left join ProductSales as Ps2
+on Ps1.productName = Ps2.productName and Ps1.Year > Ps2.Year
+group by Ps1.productName,Ps1.Year,Ps1.Sales
+
+-----------------------------------------------------
+--2nd steps
+
+select A.productName,A.Sales,PS.Sales from (
+select Ps1.productName,Ps1.Year,Ps1.Sales,Max(Ps2.Year) as prev_year from ProductSales as Ps1
+left join ProductSales as Ps2
+on Ps1.productName = Ps2.productName and Ps1.Year > Ps2.Year
+group by Ps1.productName,Ps1.Year,Ps1.Sales) as A
+left join ProductSales as PS
+on A.productName = PS.productName and A.prev_year = PS.Year
+
+-- 3rd step
+
+
+select 
+		A.productName,
+		A.Sales as hozirgi_savdo,
+		isnull(PS.Sales,0) as otganyilgi_savdo,
+		isnull(A.Sales - PS.Sales,0) as '$',
+		isnull(cast(cast(A.Sales - PS.Sales as decimal(10,2))/cast(PS.Sales as decimal(10,2))*100 as decimal(10,2)),0) as '%'
+		from (
+select Ps1.productName,Ps1.Year,Ps1.Sales,Max(Ps2.Year) as prev_year from ProductSales as Ps1
+left join ProductSales as Ps2
+on Ps1.productName = Ps2.productName and Ps1.Year > Ps2.Year
+group by Ps1.productName,Ps1.Year,Ps1.Sales) as A
+left join ProductSales as PS
+on A.productName = PS.productName and A.prev_year = PS.Year
