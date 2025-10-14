@@ -1,0 +1,73 @@
+------ window functions
+  -----aggregated window functions
+  ----- ranking window functions
+with cte as (
+select *,avg(salary) over() as sth from employees  )
+select * from cte
+where cte.sth>salary
+
+----
+----  agar over() bo`lsa window functions deyiladi
+----- over() har bir satrga qo`yib beradi
+
+with cte as (
+select *,avg(salary) over(partition by department_id) as sth from employees  )            --partition group by ga o`xshab department_id bo1yicha o`rtaxhani qilib beradi
+select * from cte
+where cte.sth>salary
+
+with cte as (
+select *,
+avg(salary) over(partition by department_id,first_name) as sth,
+sum(salary) over(partition by department_id) as sth1, 
+max(salary) over(partition by department_id) as sth2
+from employees  )
+select * from cte
+where cte.sth<salary
+
+select 
+	*,
+	row_number() over(order by salary desc) as rn,      ---- salary bo`yicha rangirovka qiladi, ammo qiymat bir hil bo`lsayam o`rin xar hil bo`lib ketvuradi
+	rank() over(order by salary desc) as rn2,             ---- salary bo`yicha rangirovka qiladi, qiymat bir hil bo`lsa o`rin bir hil, ammo rank numberri davom etvuradi ya'ni satr qancha bo`lsa rankning oxirgisiyam shu bilan tugaydi
+	dense_rank() over(order by salary desc) as rn3       ---- eng yaxshi variant
+	from employees
+
+  select 
+	*,
+	row_number() over(partition by department_id order by salary desc) as rn,      ---- department boyicha ranking
+	rank() over(partition by department_id order by salary desc) as rn2,
+	dense_rank() over(partition by department_id order by salary desc) as rn3
+	from employees
+
+
+  with cte as (
+select 
+	*,
+	dense_rank() over(partition by department_id order by salary desc) as rn3       ---- department bo`yicha maximum salaryni chiqaradi
+	from employees)
+select * from cte
+where rn3=1
+
+create  table emp (groups varchar(20), sequence int)
+insert into Emp values ('A',1),('A',2),('A',3),('A',5),('A',6),('A',8),('A',9),('B',11),('C',1),('C',2),('C',3)
+
+select * from emp
+
+with cte as (
+	select 
+		*,
+		dense_rank() over(partition by groups order by sequence desc) as rn,
+		dense_rank() over(partition by groups order by sequence) as rn2
+		from emp )
+
+select * from cte
+where rn=1 or rn2=1
+
+with cte as(
+select
+	groups,
+	sequence,
+	sequence-row_number() over(order by (select null)) as rn
+	from emp)
+select groups, min(sequence) as min_val, max(sequence) as max_val from cte
+group by groups,rn
+order by groups
